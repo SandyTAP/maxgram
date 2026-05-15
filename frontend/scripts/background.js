@@ -3,7 +3,7 @@ const background = document.createElement("div");
 background.style.position = "fixed";
 background.style.inset = "0";
 
-background.style.backgroundImage = "url('./background.png')";
+background.style.backgroundImage = "url('./assets/background.png')";
 background.style.backgroundRepeat = "repeat";
 background.style.backgroundSize = "1800px";
 
