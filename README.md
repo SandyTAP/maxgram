@@ -14,7 +14,9 @@
 - полнофункциональные настройки
 - и многое другое...
 
-# Связь со мной - [Telegram](https://t.me/linaspise)
+# Связь с разработчиками - [Telegram](https://t.me/linaspise)
+[Telegram](https://t.me/sandytapowner)
+
 # Так же можно связаться тут [X.COM](https://x.com/linaspise)
 
 
