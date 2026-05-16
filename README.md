@@ -14,9 +14,12 @@
 - полнофункциональные настройки
 - и многое другое...
 
-# Связь с разработчиками 
-- [SandyTAP](https://t.me/linaspise)
-- [linaspise](https://t.me/sandytapowner) 
+# 🤝 Связь с разработчиками
+- 👨‍💻 Telegram
+SandyTAP
+linaspise
+- 🌐 Социальные сети
+X (Twitter) — @linaspise
 
 # Так же можно связаться с @linaspise тут [X.COM](https://x.com/linaspise)
 
