@@ -85,6 +85,9 @@ function startPolling() {
 
 
                 qr.classList.add("blurred");
+                showExpiredText();
+
+
             }
 
         } catch (err) {
@@ -105,7 +108,7 @@ function startPolling() {
 refreshBtn.addEventListener("click", async () => {
 
     await loadQR();
-
+    resetExpiredText();
 });
 
 

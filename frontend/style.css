@@ -259,3 +259,9 @@ body{
 
     user-select:none;
 }
+
+.error-message {
+    color: #b33;
+    margin-top: 30px;
+    font-weight: bold;
+}

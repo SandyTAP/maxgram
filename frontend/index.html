@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 
-<link rel="icon" type="image/png" href="./assets/favicon.png">
+<link rel="icon" type="image/png" href="/frontend/assets/favicon.png">
 
 <meta charset="UTF-8">
 
@@ -30,6 +30,8 @@
 
 <script src="scripts/background.js" defer></script>
 <script src="scripts/qr.js" defer></script>
+<script src="scripts/expired.js" defer></script>
+
 
 </head>
 
@@ -96,7 +98,9 @@
         или скачать приложение
     </div>
 
-</div>
+    <div id="auth-error" class="hidden error-message"></div>
+
+
 
 </body>
 </html>
