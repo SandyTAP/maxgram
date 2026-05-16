@@ -94,8 +94,8 @@
 
 ### <img src="https://img.icons8.com/color/48/telegram-app--v1.png" width="22"/> Telegram
 
-- [SandyTAP](https://t.me/linaspise)
-- [linaspise](https://t.me/sandytapowner)
+- [SandyTAP](https://t.me/sandytapowner)
+- [linaspise](https://t.me/linaspise)
 
 ---
 
