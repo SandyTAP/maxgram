@@ -14,10 +14,11 @@
 - полнофункциональные настройки
 - и многое другое...
 
-# Связь с разработчиками - [Telegram](https://t.me/linaspise)
-[Telegram](https://t.me/sandytapowner)
+# Связь с разработчиками 
+# [SandyTAP](https://t.me/linaspise)
+# [linaspise](https://t.me/sandytapowner) 
 
-# Так же можно связаться тут [X.COM](https://x.com/linaspise)
+# Так же можно связаться с @linaspise тут [X.COM](https://x.com/linaspise)
 
 
 
