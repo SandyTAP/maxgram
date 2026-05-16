@@ -15,7 +15,7 @@
 - и многое другое...
 
 # Связь со мной - [Telegram](https://t.me/linaspise)
-[X - Twitter](https://x.com/linaspise)
+# Так же можно связаться тут [X.COM](https://x.com/linaspise)
 
 
 
