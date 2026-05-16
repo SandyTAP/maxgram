@@ -2,16 +2,16 @@
 <html lang="ru">
 <head>
 
-<link rel="icon" type="image/png" href="./assets/favicon.png">
+<link rel="icon" type="image/png" href="/frontend/assets/favicon.png">
 
 <meta charset="UTF-8">
 
 <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    content="width=device-width, initial-scale=1.0"
 >
 
-<title>MaxSpise</title>
+<title>Maxgram</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 
@@ -28,311 +28,77 @@
 
 <link rel="stylesheet" href="./style.css">
 
-<script src="scripts/i18n.js" defer></script>
-<script src="scripts/store.js" defer></script>
 <script src="scripts/background.js" defer></script>
-<script src="scripts/phone.js" defer></script>
 <script src="scripts/qr.js" defer></script>
-<script src="scripts/main.js" defer></script>
+<script src="scripts/expired.js" defer></script>
+
 
 </head>
 
 <body>
 
-<svg aria-hidden="true" class="icon-sprite">
-    <symbol id="icon_globe_language" viewBox="0 0 24 24" fill="none">
-        <path fill="currentColor" d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2M9.027 13c.205 3.946 1.588 7 2.973 7s2.768-3.054 2.973-7zm-4.963 0a8 8 0 0 0 4.342 6.147q-.18-.376-.333-.766C7.5 16.904 7.12 15.03 7.024 13zm12.912 0c-.096 2.031-.476 3.904-1.05 5.38q-.151.392-.333.767A8 8 0 0 0 19.936 13zm-1.383-8.147q.18.376.334.766c.573 1.477.953 3.35 1.049 5.381h2.96a8 8 0 0 0-4.343-6.147M12 4c-1.385 0-2.768 3.054-2.973 7h5.946C14.768 7.054 13.385 4 12 4m-3.594.853A8 8 0 0 0 4.064 11h2.96c.096-2.031.476-3.904 1.05-5.38q.151-.393.332-.767"/>
-    </symbol>
-    <symbol id="icon_question" viewBox="0 0 24 24" fill="none">
-        <path fill="currentColor" d="M10.705 13.635c-.05.52.39.945.912.945s.912-.431 1.027-.94a1.96 1.96 0 0 1 .493-.94q.295-.309.756-.592.523-.312.903-.71.381-.397.585-.91.21-.51.21-1.158 0-.96-.465-1.66a3 3 0 0 0-1.29-1.085q-.825-.38-1.91-.38-.993 0-1.818.363A3.1 3.1 0 0 0 8.79 7.66a2.8 2.8 0 0 0-.364.77c-.168.552.317 1.037.893 1.037h.041c.522 0 .9-.448 1.192-.88q.239-.354.596-.523.364-.177.767-.177.438 0 .79.182.358.182.568.512t.21.778q0 .398-.159.722a2 2 0 0 1-.437.58 4 4 0 0 1-.62.47 4.2 4.2 0 0 0-.857.688q-.352.369-.546.978a4 4 0 0 0-.159.838m.074 4.126q.37.364.88.364.342 0 .62-.165.284-.17.454-.454.177-.285.177-.631 0-.511-.375-.875a1.2 1.2 0 0 0-.875-.364q-.512 0-.881.364-.37.363-.37.875 0 .523.37.886"/>
-        <path fill="currentColor" fill-rule="evenodd" d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2s10 4.477 10 10m-2 0a8 8 0 1 1-16 0 8 8 0 0 1 16 0" clip-rule="evenodd"/>
-    </symbol>
-</svg>
+<div class="login-box">
 
-<div class="app-shell">
+    <div class="top-icons">
 
-<section class="screen screen-active" id="screenQr">
+        <img
+            class="icon white-icon"
+            src="assets/icon.svg"
+            alt=""
+        >
 
-    <form class="auth auth--qr-code login-box chat-surface" id="qrAuthForm">
+        <img
+            class="icon white-icon"
+            src="assets/question.svg"
+            alt=""
+        >
 
-        <div class="headerButton headerButton--language">
+    </div>
+
+
+    <div class="qr-wrapper">
+
+        <img
+            class="qr"
+            id="qr"
+            src=""
+            alt=""
+        >
+
+        <div
+            class="qr-expired hidden"
+            id="qrExpired"
+        >
+
             <button
-                type="button"
-                id="langBtn"
-                class="button button--large button--neutral-tertiary"
-                data-i18n-aria="langAria"
-                aria-haspopup="menu"
+                class="refresh-btn"
+                id="refreshBtn"
             >
-                <span class="button-inner">
-                    <svg aria-hidden="true" width="24" height="24">
-                        <use href="#icon_globe_language"></use>
-                    </svg>
-                </span>
+
+                <img
+                    class="retry-icon"
+                    src="./assets/retry.svg"
+                    alt=""
+                >
+
             </button>
-            <div class="lang-menu hidden" id="langMenu" role="menu">
-                <button type="button" class="lang-menu__item" data-lang="ru" data-i18n="langRu">Русский</button>
-                <button type="button" class="lang-menu__item" data-lang="en" data-i18n="langEn">English</button>
-            </div>
-        </div>
 
-        <div class="headerButton headerButton--help">
-            <a
-                href="https://help.maxspise.ru"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="button button--large button--neutral-tertiary"
-                data-i18n-aria="helpAria"
-            >
-                <span class="button-inner">
-                    <svg aria-hidden="true" width="24" height="24">
-                        <use href="#icon_question"></use>
-                    </svg>
-                </span>
-            </a>
-        </div>
-
-        <div class="registration">
-
-            <div class="qr" id="qrWrapper">
-
-                <div class="qrBlur" id="qrBlur"></div>
-
-                <div class="qrLogo hidden" id="qrLogo">
-                    <button
-                        type="button"
-                        class="button button--large button--accent-primary"
-                        id="refreshBtn"
-                        data-i18n-aria="refreshAria"
-                    >
-                        <span class="button-inner">
-                            <svg class="header-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M20 12a8 8 0 1 1-2.34-5.66" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-                                <path d="M20 4v6h-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </span>
-                    </button>
-                </div>
-
-            </div>
-
-            <div class="info" id="qrActiveText">
-                <div class="title" data-i18n="qrTitle">Войдите в MaxSpise по QR-коду</div>
-                <div class="subtitle" data-i18n="qrSubtitle" data-i18n-html="true">
-                    Наведите камеру на QR-код, чтобы войти в&nbsp;профиль
-                    или&nbsp;скачать приложение
-                </div>
-            </div>
-
-            <div class="info hidden" id="qrExpiredText">
-                <div class="title" data-i18n="qrExpiredTitle">QR-код устарел</div>
-                <div class="subtitle" data-i18n="qrExpiredSubtitle" data-i18n-html="true">
-                    Обновите его, чтобы войти в&nbsp;профиль
-                    или&nbsp;скачать приложение
-                </div>
-            </div>
-
-            <p class="hint hint--error hint--start hidden" id="sessionError" data-i18n="sessionError">
-                Авторизационная сессия не найдена
-            </p>
-
-        </div>
-
-        <div class="footer">
-            <button type="button" class="phone-register-btn" id="openPhoneBtn" data-i18n="phoneRegister">
-                Регистрация по номеру
-            </button>
-        </div>
-
-    </form>
-
-</section>
-
-
-<section class="screen" id="screenPhone">
-
-    <div class="phone-screen">
-
-        <button class="back-btn" id="phoneBackBtn" type="button" data-i18n-aria="backAria">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        </button>
-
-        <h1 class="phone-heading" data-i18n="phoneTitle">Ваш номер телефона</h1>
-
-        <p class="phone-hint" data-i18n="phoneHint" data-i18n-html="true">
-            Укажите номер в международном формате.<br>
-            Мы отправим код в СМС.
-        </p>
-
-        <div class="phone-input-row">
-            <span class="phone-prefix">+7</span>
-            <input
-                class="phone-input"
-                id="phoneInput"
-                type="tel"
-                inputmode="numeric"
-                autocomplete="tel"
-                placeholder="999 999 99 99"
-                maxlength="16"
-            >
-        </div>
-
-        <p class="phone-error hidden" id="phoneError"></p>
-
-        <button class="primary-btn" id="sendCodeBtn" type="button" data-i18n="phoneContinue">
-            Продолжить
-        </button>
-
-    </div>
-
-</section>
-
-
-<section class="screen" id="screenSms">
-
-    <div class="phone-screen sms-screen">
-
-        <button class="back-btn" id="smsBackBtn" type="button" data-i18n-aria="backAria">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                <path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        </button>
-
-        <div class="sms-header">
-            <h1 class="phone-heading sms-heading" data-i18n="smsTitle">Какой код пришёл в СМС?</h1>
-
-            <p class="sms-sent" id="smsSentText">
-            Отправили код на +7 000 000 00 00.<br>
-            Если номер неверный, вернитесь назад
-            </p>
-        </div>
-
-        <input
-            type="tel"
-            id="codeInput"
-            class="code-input-hidden"
-            inputmode="numeric"
-            autocomplete="one-time-code"
-            maxlength="5"
-        >
-
-        <div class="code-boxes" id="codeBoxes">
-            <div class="code-cell" data-index="0"></div>
-            <div class="code-cell" data-index="1"></div>
-            <div class="code-cell" data-index="2"></div>
-            <div class="code-cell" data-index="3"></div>
-            <div class="code-cell" data-index="4"></div>
-        </div>
-
-        <p class="phone-error hidden" id="smsError"></p>
-
-        <div class="numpad" id="numpad">
-            <button type="button" class="numpad-key" data-digit="1">
-                <span>1</span>
-            </button>
-            <button type="button" class="numpad-key" data-digit="2">
-                <span>2</span><small>А Б В Г</small>
-            </button>
-            <button type="button" class="numpad-key" data-digit="3">
-                <span>3</span><small>Д Е Ж З</small>
-            </button>
-            <button type="button" class="numpad-key" data-digit="4">
-                <span>4</span><small>И Й К Л</small>
-            </button>
-            <button type="button" class="numpad-key" data-digit="5">
-                <span>5</span><small>М Н О П</small>
-            </button>
-            <button type="button" class="numpad-key" data-digit="6">
-                <span>6</span><small>Р С Т У</small>
-            </button>
-            <button type="button" class="numpad-key" data-digit="7">
-                <span>7</span><small>Ф Х Ц Ч</small>
-            </button>
-            <button type="button" class="numpad-key" data-digit="8">
-                <span>8</span><small>Ш Щ Ъ Ы</small>
-            </button>
-            <button type="button" class="numpad-key" data-digit="9">
-                <span>9</span><small>Ь Э Ю Я</small>
-            </button>
-            <button type="button" class="numpad-key numpad-empty" disabled></button>
-            <button type="button" class="numpad-key" data-digit="0">
-                <span>0</span>
-            </button>
-            <button type="button" class="numpad-key numpad-back" id="numpadBack" data-i18n-aria="deleteAria">
-                <svg width="22" height="18" viewBox="0 0 22 18" fill="none">
-                    <path d="M7 4.5L2 9L7 13.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                    <rect x="5" y="4" width="15" height="10" rx="2" stroke="currentColor" stroke-width="1.6"/>
-                    <path d="M12 7.5L16 10.5M16 7.5L12 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-                </svg>
-            </button>
         </div>
 
     </div>
 
-</section>
 
-
-<section class="screen" id="screenName">
-
-    <div class="phone-screen onboarding-screen chat-surface">
-
-        <h1 class="phone-heading" data-i18n="nameTitle">Как вас зовут?</h1>
-
-        <p class="phone-hint" data-i18n="nameHint">
-            Укажите имя, которое будут видеть ваши контакты
-        </p>
-
-        <input
-            class="name-input"
-            id="nameInput"
-            type="text"
-            autocomplete="name"
-            maxlength="64"
-            data-i18n-placeholder="namePlaceholder"
-            placeholder="Имя"
-        >
-
-        <p class="phone-error hidden" id="nameError"></p>
-
-        <button class="primary-btn" id="nameContinueBtn" type="button" disabled data-i18n="phoneContinue">
-            Продолжить
-        </button>
-
+    <div class="title">
+        Войдите в Maxgram по QR-коду
     </div>
 
-</section>
-
-
-<section class="screen" id="screenPhoto">
-
-    <div class="phone-screen onboarding-screen chat-surface">
-
-        <h1 class="phone-heading" data-i18n="photoTitle">Добавьте фото профиля</h1>
-
-        <p class="phone-hint" data-i18n="photoHint">
-            Так вас смогут узнать друзья и близкие
-        </p>
-
-        <button type="button" class="avatar-picker" id="avatarPicker" data-i18n-aria="photoPickAria">
-            <span class="avatar-picker__placeholder" id="avatarPlaceholder">
-                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="currentColor" stroke-width="1.6"/>
-                    <path d="M4 20c1.5-3 4.5-5 8-5s6.5 2 8 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-                </svg>
-            </span>
-            <img class="avatar-picker__image hidden" id="avatarPreview" alt="">
-        </button>
-
-        <input type="file" id="avatarFile" class="hidden" accept="image/*">
-
-        <p class="phone-error hidden" id="photoError"></p>
-
-        <button class="primary-btn" id="photoContinueBtn" type="button" disabled data-i18n="photoContinue">
-            Продолжить
-        </button>
-
+    <div class="subtitle">
+        Наведите камеру на QR-код,
+        чтобы войти в профиль
+        или скачать приложение
     </div>
+
+    <div id="auth-error" class="hidden error-message"></div>
 
 
 
