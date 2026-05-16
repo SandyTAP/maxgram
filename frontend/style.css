@@ -36,8 +36,6 @@ body{
 
 
 .login-box{
-    padding:40px 24px;
-
     width:100%;
     max-width:580px;
 
@@ -46,8 +44,10 @@ body{
     display:flex;
     flex-direction:column;
 
-    justify-content:center;
     align-items:center;
+    justify-content:flex-start;
+
+    padding:38px 24px 0;
 
     gap:0;
 
@@ -57,17 +57,23 @@ body{
 
     text-align:center;
 
-    background:#17181c;
+    background:
+    linear-gradient(
+        180deg,
+        rgba(20,21,28,.98),
+        rgba(13,14,20,.98)
+    );
 
-    backdrop-filter:blur(25px);
-    -webkit-backdrop-filter:blur(25px);
+    backdrop-filter:blur(28px);
+    -webkit-backdrop-filter:blur(28px);
 
-    border:.5px solid rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.045);
 
-    border-radius:28px;
+    border-radius:30px;
 
     box-shadow:
-    0 4px 24px rgba(0,0,0,.08);
+    0 18px 60px rgba(0,0,0,.42),
+    inset 0 1px 0 rgba(255,255,255,.03);
 }
 
 
@@ -96,16 +102,6 @@ body{
 
 
 
-.qr{
-    width:182px;
-    height:182px;
-
-    margin-top:78px;
-
-    border-radius:18px;
-
-    object-fit:cover;
-}
 
 
 
@@ -156,40 +152,37 @@ body{
 .qr-wrapper{
     position:relative;
 
-    width:182px;
-    height:182px;
+    width:252px;
+    height:252px;
 
-    margin-top:78px;
+    margin-top:48px;
+    margin-bottom:8px;
+
+    overflow:visible;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
 
+
 .qr{
-    width:100%;
-    height:100%;
+    width:240px;
+    height:240px;
 
-    margin-top:0;
-
-    border-radius:18px;
+    border-radius:24px;
 
     object-fit:cover;
 
-    display:block;
+    transition:
+    filter .25s ease,
+    transform .25s ease;
 }
 
-.qr-expired{
-    position:absolute;
-    inset:0;
+.qr.blurred{
+    filter:blur(10px);
 
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    border-radius:18px;
-
-    background:rgba(8,10,16,.18);
-
-    backdrop-filter:blur(2.5px);
-    -webkit-backdrop-filter:blur(2.5px);
+    transform:scale(1.03);
 }
 
 .hidden{
@@ -197,22 +190,45 @@ body{
 }
 
 .refresh-btn{
-    width:40px;
-    height:40px;
+    position:absolute;
+
+    top:50%;
+    left:50%;
+
+    transform:translate(-50%, -50%);
+
+    width:56px;
+    height:56px;
 
     border:none;
-    border-radius:14px;
+    outline:none;
+
+    border-radius:18px;
 
     background:#2481ff;
 
-    color:white;
-
-    font-size:22px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
     cursor:pointer;
 
-    margin-bottom:16px;
+    z-index:10;
+
+    box-shadow:
+    0 6px 22px rgba(36,129,255,.38);
 }
+
+.refresh-btn:hover{
+    background:#3790ff;
+
+    transform:translate(-50%, -50%) scale(1.03);
+}
+
+.refresh-btn:active{
+    transform:translate(-50%, -50%) scale(.96);
+}
+
 
 .expired-title{
     color:white;
@@ -231,43 +247,6 @@ body{
     font-size:13px;
 
     line-height:1.35;
-}
-
-.refresh-btn{
-    width:56px;
-    height:56px;
-
-    border:none;
-    outline:none;
-
-    border-radius:18px;
-
-    background:#2481ff;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    cursor:pointer;
-
-    transition:
-    transform .14s ease,
-    background .14s ease;
-
-    box-shadow:
-    0 6px 22px rgba(36,129,255,.38);
-
-    padding:0;
-}
-
-.refresh-btn:hover{
-    background:#3790ff;
-
-    transform:scale(1.03);
-}
-
-.refresh-btn:active{
-    transform:scale(.96);
 }
 
 .retry-icon{

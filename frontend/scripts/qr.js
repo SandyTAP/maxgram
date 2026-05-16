@@ -1,16 +1,26 @@
 let currentToken = null;
+let pollingInterval = null;
+
+const qr = document.getElementById("qr");
+const qrExpired = document.getElementById("qrExpired");
+const refreshBtn = document.getElementById("refreshBtn");
+
 
 async function loadQR() {
 
     try {
+
+
+        qrExpired.classList.add("hidden");
+
+        qr.classList.remove("blurred");
+
 
         const response = await fetch(
             "http://localhost:5000/api/create-qr"
         );
 
         const data = await response.json();
-
-        const qr = document.getElementById("qr");
 
         qr.src = data.qr;
 
@@ -20,16 +30,18 @@ async function loadQR() {
 
     } catch (err) {
 
-        console.error("Ошибка загрузки QR:", err);
+        console.error(
+            "Ошибка загрузки QR:",
+            err
+        );
 
     }
 
 }
 
 
-let pollingInterval = null;
-
 function startPolling() {
+
 
     if (pollingInterval) {
         clearInterval(pollingInterval);
@@ -47,6 +59,8 @@ function startPolling() {
 
             const data = await response.json();
 
+
+            // успешный вход
             if (data.status === "approved") {
 
                 clearInterval(pollingInterval);
@@ -56,8 +70,9 @@ function startPolling() {
                 alert("Вход выполнен");
 
                 // window.location.href = "/app";
-
             }
+
+
 
             if (data.status === "expired") {
 
@@ -65,10 +80,11 @@ function startPolling() {
 
                 console.log("QR expired");
 
-                document
-                    .getElementById("qrExpired")
-                    .classList.remove("hidden");
 
+                qrExpired.classList.remove("hidden");
+
+
+                qr.classList.add("blurred");
             }
 
         } catch (err) {
@@ -85,17 +101,13 @@ function startPolling() {
 }
 
 
-document
-    .getElementById("refreshBtn")
-    .addEventListener("click", async () => {
 
-        document
-            .getElementById("qrExpired")
-            .classList.add("hidden");
+refreshBtn.addEventListener("click", async () => {
 
-        await loadQR();
+    await loadQR();
 
-    });
+});
+
 
 
 loadQR();
