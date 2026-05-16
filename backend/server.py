@@ -11,7 +11,7 @@ app = Flask(__name__)
 CORS(app)
 
 DOMAIN = "http://192.168.0.100:5000"
-# DOMAIN = "https://maxgram.com"
+# DOMAIN = "https://maxspise.com"
 expired_secound = 5
 sessions = {}
 
@@ -82,7 +82,6 @@ def create_qr():
 
     logo = Image.open("logo.png").convert("RGBA")
 
-    # размер логотипа
     logo_size = img.size[0] // 4
 
     logo = logo.resize(
@@ -180,7 +179,7 @@ def auth_page(token):
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <title>Maxgram Auth</title>
+        <title>MaxSpise Auth</title>
 
         <style>
 
@@ -221,7 +220,7 @@ def auth_page(token):
 
         <div class="box">
 
-            <h2>Maxgram</h2>
+            <h2>MaxSpise</h2>
 
             <p>Подтвердить вход?</p>
 
@@ -261,7 +260,7 @@ def auth_page(token):
     """
 @app.route("/")
 def home():
-    return "Maxgram auth server running"
+    return "MaxSpise auth server running"
 
 
 app.run(host="0.0.0.0", port=5000)
