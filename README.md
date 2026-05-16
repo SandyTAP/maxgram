@@ -15,8 +15,8 @@
 - и многое другое...
 
 # Связь с разработчиками 
-# [SandyTAP](https://t.me/linaspise)
-# [linaspise](https://t.me/sandytapowner) 
+- [SandyTAP](https://t.me/linaspise)
+- [linaspise](https://t.me/sandytapowner) 
 
 # Так же можно связаться с @linaspise тут [X.COM](https://x.com/linaspise)
 
