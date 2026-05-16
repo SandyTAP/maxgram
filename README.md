@@ -1,20 +1,21 @@
 # MaxSpise
-Open source MAX
+С открытым исходным кодом MAX
 
-# Features
-- account registration / login
-- fully functional chats
-- profile editing
-- channels
-- animoji (animated emoji)
-- sending media files
-- setting a profile photo
-- stickers
-- themes
-- fully functional settings
-- and more...
+# Функции
+- регистрацию учетной записи / логин
+- полнофункциональные чаты
+- редактирование профиля
+- каналы
+- анимированные эмодзи
+- отправка медиафайлов
+- настройку фотографии профиля
+- стикеры
+- темы
+- полнофункциональные настройки
+- и многое другое...
 
-# Contact me - [Telegram](https://t.me/linaspise)
+# Связь со мной - [Telegram](https://t.me/linaspise)
+[X - Twitter](https://x.com/linaspise)
 
 
 
