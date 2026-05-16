@@ -1,0 +1,315 @@
+const STORE_KEY = "maxspise-app";
+const PROFILE_STORAGE_KEY = "maxspise-profile";
+const BOT_ID = "maxspise";
+const SAVED_ID = "saved";
+
+const WELCOME_BOT_TEXT =
+    "Добро пожаловать в MAXSPISE! 🎉\nЭто официальный бот для полезных сообщений и новостей. Если появятся вопросы – вот ссылка с полезной информацией.";
+
+function uid() {
+    return `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+}
+
+function defaultState() {
+    return {
+        version: 1,
+        flags: { welcomeSent: false },
+        profile: { phone: "", name: "", avatar: "", bio: "", username: "" },
+        settings: {
+            theme: "dark",
+            notifications: true,
+            sound: true,
+            privacyLastSeen: "everyone"
+        },
+        chats: {
+            [BOT_ID]: {
+                id: BOT_ID,
+                type: "service",
+                title: "MaxSpise",
+                avatar: "M",
+                accent: true,
+                readOnly: true
+            },
+            [SAVED_ID]: {
+                id: SAVED_ID,
+                type: "saved",
+                title: "Избранное",
+                avatar: "И"
+            }
+        },
+        messages: {
+            [BOT_ID]: [],
+            [SAVED_ID]: []
+        },
+        calls: [],
+        stickerRecent: []
+    };
+}
+
+function loadState() {
+    try {
+        const raw = localStorage.getItem(STORE_KEY);
+        if (!raw) return defaultState();
+        const parsed = JSON.parse(raw);
+        return { ...defaultState(), ...parsed, chats: { ...defaultState().chats, ...parsed.chats }, messages: { ...defaultState().messages, ...parsed.messages } };
+    } catch {
+        return defaultState();
+    }
+}
+
+let state = loadState();
+
+function saveState() {
+    localStorage.setItem(STORE_KEY, JSON.stringify(state));
+}
+
+function syncProfileKey() {
+    const p = state.profile;
+    if (p.name && p.avatar) {
+        localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify({
+            phone: p.phone,
+            name: p.name,
+            avatar: p.avatar
+        }));
+    }
+}
+
+function formatLoginDate(date) {
+    const loc = state.settings?.language === "en" ? "en-GB" : "ru-RU";
+    return date.toLocaleString(loc, {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        timeZoneName: "short"
+    });
+}
+
+function buildLoginNotification(phone, date) {
+    return (
+        "Сервисные уведомления — Новый вход в MAXSPISE\n\n" +
+        `Обнаружили вход в профиль с вашим номером телефона ${phone} ${formatLoginDate(date)}\n\n` +
+        "Если это были не вы, перейдите в Настройки → Устройства → Завершить все сессии, кроме текущей, " +
+        "чтобы предотвратить нежелательный доступ к вашим данным, перепискам и звонкам"
+    );
+}
+
+function addMessage(chatId, msg) {
+    if (!state.messages[chatId]) state.messages[chatId] = [];
+    const entry = {
+        id: uid(),
+        ts: Date.now(),
+        outgoing: false,
+        type: "text",
+        ...msg
+    };
+    state.messages[chatId].push(entry);
+    saveState();
+    return entry;
+}
+
+function getChatList() {
+    const order = [BOT_ID, SAVED_ID];
+    const dynamic = Object.keys(state.chats).filter((id) => !order.includes(id));
+    return [...order, ...dynamic].map((id) => state.chats[id]).filter(Boolean);
+}
+
+function getLastMessage(chatId) {
+    const list = state.messages[chatId] || [];
+    return list[list.length - 1] || null;
+}
+
+function previewText(msg) {
+    if (!msg) return "";
+    if (msg.type === "media") return msg.mediaKind === "video" ? "🎬 Видео" : "📷 Фото";
+    if (msg.type === "sticker") return "Стикер";
+    if (msg.type === "animoji") return msg.text || "Animoji";
+    const t = (msg.text || "").replace(/\n/g, " ");
+    return t.length > 48 ? `${t.slice(0, 48)}…` : t;
+}
+
+function formatTime(ts) {
+    const d = new Date(ts);
+    const now = new Date();
+    if (d.toDateString() === now.toDateString()) {
+        return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    }
+    const yesterday = new Date(now);
+    yesterday.setDate(yesterday.getDate() - 1);
+    if (d.toDateString() === yesterday.toDateString()) {
+        return window.maxspiseI18n?.t("yesterday") || "вчера";
+    }
+    return d.toLocaleDateString([], { day: "numeric", month: "short" });
+}
+
+function canSendToChat(chatId) {
+    const chat = state.chats[chatId];
+    if (!chat) return false;
+    if (chat.readOnly || chat.type === "service") return false;
+    if (chat.type === "channel" && !chat.isOwner) return false;
+    return true;
+}
+
+function sendUserMessage(chatId, payload) {
+    if (!canSendToChat(chatId)) return null;
+    const entry = addMessage(chatId, { ...payload, outgoing: true });
+    window.dispatchEvent(new CustomEvent("maxspise:message", { detail: { chatId, message: entry } }));
+    return entry;
+}
+
+function recordLogin(phone) {
+    const now = new Date();
+    if (!state.flags.welcomeSent) {
+        addMessage(BOT_ID, { type: "service", text: WELCOME_BOT_TEXT, serviceLabel: "MaxSpise" });
+        state.flags.welcomeSent = true;
+        saveState();
+    }
+    if (sessionStorage.getItem("maxspise-login-notified")) return;
+
+    addMessage(BOT_ID, {
+        type: "service",
+        text: buildLoginNotification(phone, now),
+        serviceLabel: "Сервисные уведомления"
+    });
+    sessionStorage.setItem("maxspise-login-notified", "1");
+    saveState();
+}
+
+function setProfile(profile) {
+    state.profile = { ...state.profile, ...profile };
+    syncProfileKey();
+    saveState();
+}
+
+function getProfile() {
+    return { ...state.profile };
+}
+
+function getSettings() {
+    return { ...state.settings };
+}
+
+function setSettings(patch) {
+    state.settings = { ...state.settings, ...patch };
+    saveState();
+    applyTheme();
+}
+
+function applyTheme() {
+    document.body.classList.remove("theme-dark", "theme-light", "theme-night");
+    document.body.classList.add(`theme-${state.settings.theme || "dark"}`);
+}
+
+function createGroup(name) {
+    const id = `group-${uid()}`;
+    state.chats[id] = {
+        id,
+        type: "group",
+        title: name,
+        avatar: name.charAt(0).toUpperCase(),
+        members: 1
+    };
+    state.messages[id] = [];
+    addMessage(id, {
+        type: "system",
+        text: `Группа «${name}» создана`,
+        outgoing: false
+    });
+    saveState();
+    return id;
+}
+
+function createChannel(name) {
+    const id = `channel-${uid()}`;
+    state.chats[id] = {
+        id,
+        type: "channel",
+        title: name,
+        avatar: "📢",
+        isOwner: true,
+        readOnly: false
+    };
+    state.messages[id] = [];
+    addMessage(id, {
+        type: "system",
+        text: `Канал «${name}» создан. Подписчики видят только ваши публикации.`,
+        outgoing: false
+    });
+    saveState();
+    return id;
+}
+
+function addCall(contactName, type = "outgoing") {
+    const entry = {
+        id: uid(),
+        contact: contactName,
+        type,
+        ts: Date.now(),
+        duration: type === "missed" ? 0 : Math.floor(Math.random() * 300) + 30
+    };
+    state.calls.unshift(entry);
+    if (state.calls.length > 50) state.calls.length = 50;
+    saveState();
+    return entry;
+}
+
+function getCalls() {
+    return [...state.calls];
+}
+
+function searchChats(query) {
+    const q = query.trim().toLowerCase();
+    if (!q) return getChatList();
+    return getChatList().filter((c) => {
+        const title = (c.title || "").toLowerCase();
+        const last = previewText(getLastMessage(c.id)).toLowerCase();
+        return title.includes(q) || last.includes(q);
+    });
+}
+
+function importLegacyProfile() {
+    try {
+        const legacy = JSON.parse(localStorage.getItem(PROFILE_STORAGE_KEY) || "null");
+        if (!legacy) return;
+        if (!state.profile.name && legacy.name) state.profile.name = legacy.name;
+        if (!state.profile.avatar && legacy.avatar) state.profile.avatar = legacy.avatar;
+        if (!state.profile.phone && legacy.phone) state.profile.phone = legacy.phone;
+        saveState();
+    } catch { /* ignore */ }
+}
+
+importLegacyProfile();
+applyTheme();
+
+window.maxspiseStore = {
+    BOT_ID,
+    SAVED_ID,
+    loadState: () => state,
+    saveState,
+    getProfile,
+    setProfile,
+    getSettings,
+    setSettings,
+    getChatList,
+    getChat: (id) => state.chats[id],
+    getMessages: (id) => [...(state.messages[id] || [])],
+    getLastMessage,
+    previewText,
+    formatTime,
+    canSendToChat,
+    sendUserMessage,
+    addMessage,
+    recordLogin,
+    createGroup,
+    createChannel,
+    addCall,
+    getCalls,
+    searchChats,
+    applyTheme,
+    addStickerRecent: (id) => {
+        state.stickerRecent = [id, ...state.stickerRecent.filter((x) => x !== id)].slice(0, 12);
+        saveState();
+    },
+    getStickerRecent: () => [...state.stickerRecent]
+};
