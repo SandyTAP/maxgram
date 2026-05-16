@@ -1,16 +1,30 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+
 <link rel="icon" type="image/png" href="./assets/favicon.png">
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
 <title>Maxgram</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+>
 
 <link rel="stylesheet" href="./style.css">
 
@@ -18,9 +32,8 @@
 <script src="scripts/qr.js" defer></script>
 
 </head>
+
 <body>
-
-
 
 <div class="login-box">
 
@@ -41,12 +54,37 @@
     </div>
 
 
-    <img
-        class="qr"
-        id="qr"
-        src=""
-        alt=""
-    >
+    <div class="qr-wrapper">
+
+        <img
+            class="qr"
+            id="qr"
+            src=""
+            alt=""
+        >
+
+        <div
+            class="qr-expired hidden"
+            id="qrExpired"
+        >
+
+            <button
+                class="refresh-btn"
+                id="refreshBtn"
+            >
+
+                <img
+                    class="retry-icon"
+                    src="./assets/retry.svg"
+                    alt=""
+                >
+
+            </button>
+
+        </div>
+
+    </div>
+
 
     <div class="title">
         Войдите в Maxgram по QR-коду

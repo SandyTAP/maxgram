@@ -27,9 +27,15 @@ async function loadQR() {
 }
 
 
+let pollingInterval = null;
+
 function startPolling() {
 
-    setInterval(async () => {
+    if (pollingInterval) {
+        clearInterval(pollingInterval);
+    }
+
+    pollingInterval = setInterval(async () => {
 
         if (!currentToken) return;
 
@@ -43,6 +49,8 @@ function startPolling() {
 
             if (data.status === "approved") {
 
+                clearInterval(pollingInterval);
+
                 console.log("Успешный вход");
 
                 alert("Вход выполнен");
@@ -50,25 +58,44 @@ function startPolling() {
                 // window.location.href = "/app";
 
             }
+
             if (data.status === "expired") {
 
-            console.log("QR expired");
+                clearInterval(pollingInterval);
 
-            alert("QR-код истёк");
+                console.log("QR expired");
 
-            location.reload();
+                document
+                    .getElementById("qrExpired")
+                    .classList.remove("hidden");
 
             }
 
         } catch (err) {
 
-            console.error("Ошибка проверки статуса:", err);
+            console.error(
+                "Ошибка проверки статуса:",
+                err
+            );
 
         }
 
     }, 2000);
 
 }
+
+
+document
+    .getElementById("refreshBtn")
+    .addEventListener("click", async () => {
+
+        document
+            .getElementById("qrExpired")
+            .classList.add("hidden");
+
+        await loadQR();
+
+    });
 
 
 loadQR();

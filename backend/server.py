@@ -12,7 +12,7 @@ CORS(app)
 
 DOMAIN = "http://192.168.0.100:5000"
 # DOMAIN = "https://maxgram.com"
-expired_secound = 300
+expired_secound = 5
 sessions = {}
 
 """
