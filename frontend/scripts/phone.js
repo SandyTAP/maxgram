@@ -21,7 +21,13 @@ function setPhoneMessage(text, type = "") {
 }
 
 function normalizePhone(value) {
-    return value.replace(/\D/g, "").slice(0, 10);
+    let digits = value.replace(/\D/g, "");
+
+    if (digits.length === 11 && (digits.startsWith("7") || digits.startsWith("8"))) {
+        digits = digits.slice(1);
+    }
+
+    return digits.slice(0, 10);
 }
 
 function formatPhone(value) {

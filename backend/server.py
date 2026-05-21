@@ -231,7 +231,7 @@ def phone_verify():
             "error": "Неверный код"
         }), 400
 
-    session["status"] = "approved"
+    phone_sessions.pop(token)
 
     return jsonify({
         "success": True,
