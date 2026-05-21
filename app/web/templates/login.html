@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Вход — MaxGram{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-xl rounded-3xl border border-white/10 bg-white/10 p-8 shadow-2xl backdrop-blur">
+  <h1 class="text-3xl font-black">Регистрация или вход</h1>
+  <p class="mt-3 text-slate-300">Введите email, username и Telegram ID. Бот отправит одноразовый 6-значный код только в Telegram.</p>
+  {% if error %}<div class="mt-5 rounded-2xl border border-red-400/40 bg-red-500/10 p-4 text-red-100">{{ error }}</div>{% endif %}
+  <form method="post" action="/auth/request" class="mt-8 space-y-5">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <label class="block"><span class="text-sm text-slate-300">Email</span><input required type="email" name="email" class="mt-2 w-full rounded-2xl border border-white/10 bg-slate-900 px-4 py-3 outline-none ring-blue-500 focus:ring-2" placeholder="you@example.com"></label>
+    <label class="block"><span class="text-sm text-slate-300">Username</span><input required name="username" minlength="3" class="mt-2 w-full rounded-2xl border border-white/10 bg-slate-900 px-4 py-3 outline-none ring-blue-500 focus:ring-2" placeholder="maxgram_user"></label>
+    <label class="block"><span class="text-sm text-slate-300">Telegram ID</span><input required type="number" name="telegram_id" class="mt-2 w-full rounded-2xl border border-white/10 bg-slate-900 px-4 py-3 outline-none ring-blue-500 focus:ring-2" placeholder="123456789"></label>
+    <button class="w-full rounded-2xl bg-blue-500 px-6 py-3 font-bold hover:bg-blue-400">Отправить OTP в Telegram</button>
+  </form>
+  <p class="mt-5 text-sm text-slate-400">Telegram ID показывает бот после команды <code>/start</code>.</p>
+</div>
+{% endblock %}

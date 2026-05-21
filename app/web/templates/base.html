@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}MaxGram{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/static/css/app.css">
+</head>
+<body class="min-h-screen bg-slate-950 text-white antialiased">
+  <div class="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,#2563eb55,transparent_35%),radial-gradient(circle_at_bottom_right,#14b8a655,transparent_35%)]"></div>
+  <nav class="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
+    <a href="/" class="text-xl font-bold tracking-tight">MaxGram OTP</a>
+    <div class="flex items-center gap-3 text-sm text-slate-300">
+      <a class="hover:text-white" href="/docs">Swagger</a>
+      <a class="hover:text-white" href="/admin">Admin</a>
+      <a class="rounded-xl bg-blue-500 px-4 py-2 font-semibold text-white hover:bg-blue-400" href="/login">Войти</a>
+    </div>
+  </nav>
+  <main class="mx-auto max-w-6xl px-6 pb-12">
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
