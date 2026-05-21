@@ -31,6 +31,7 @@
 <script src="scripts/background.js" defer></script>
 <script src="scripts/qr.js" defer></script>
 <script src="scripts/expired.js" defer></script>
+<script src="scripts/phone.js" defer></script>
 
 
 </head>
@@ -99,6 +100,92 @@
     </div>
 
     <div id="auth-error" class="hidden error-message"></div>
+
+    <button
+        class="phone-login-btn"
+        id="phoneLoginBtn"
+        type="button"
+    >
+        Войти по номеру
+    </button>
+
+    <div
+        class="phone-form hidden"
+        id="phoneForm"
+    >
+
+        <div class="phone-field">
+            <div class="country-code">
+                <span class="flag">🇷🇺</span>
+                <span>+7</span>
+            </div>
+
+            <input
+                id="phoneInput"
+                class="phone-input"
+                type="tel"
+                inputmode="numeric"
+                autocomplete="tel"
+                placeholder="123 456 78 90"
+                maxlength="13"
+            >
+        </div>
+
+        <div class="phone-hint">
+            Для входа нужен номер из России. Код появится ниже в тестовом режиме.
+        </div>
+
+        <button
+            class="continue-btn"
+            id="phoneContinueBtn"
+            type="button"
+            disabled
+        >
+            Продолжить
+        </button>
+
+        <div
+            class="code-form hidden"
+            id="codeForm"
+        >
+            <div
+                class="dev-code"
+                id="devCode"
+            ></div>
+
+            <input
+                id="codeInput"
+                class="code-input"
+                type="text"
+                inputmode="numeric"
+                autocomplete="one-time-code"
+                placeholder="Код из SMS"
+                maxlength="6"
+            >
+
+            <button
+                class="continue-btn"
+                id="codeContinueBtn"
+                type="button"
+                disabled
+            >
+                Войти
+            </button>
+        </div>
+
+        <button
+            class="back-qr-btn"
+            id="backQrBtn"
+            type="button"
+        >
+            Назад к QR-коду
+        </button>
+
+        <div
+            class="phone-message"
+            id="phoneMessage"
+        ></div>
+    </div>
 
 
 
