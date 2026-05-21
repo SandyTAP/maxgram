@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Admin Login — MaxGram{% endblock %}
+{% block content %}
+<div class="mx-auto max-w-md rounded-3xl border border-white/10 bg-white/10 p-8 shadow-2xl backdrop-blur">
+  <h1 class="text-3xl font-black">Admin</h1>
+  {% if error %}<div class="mt-5 rounded-2xl border border-red-400/40 bg-red-500/10 p-4 text-red-100">{{ error }}</div>{% endif %}
+  <form method="post" action="/admin/login" class="mt-8 space-y-5">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <input required type="email" name="email" class="w-full rounded-2xl border border-white/10 bg-slate-900 px-4 py-3" placeholder="admin@example.com">
+    <input required type="password" name="password" class="w-full rounded-2xl border border-white/10 bg-slate-900 px-4 py-3" placeholder="password">
+    <button class="w-full rounded-2xl bg-blue-500 px-6 py-3 font-bold hover:bg-blue-400">Войти</button>
+  </form>
+</div>
+{% endblock %}
