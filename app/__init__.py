@@ -1,0 +1,1 @@
+"""MaxGram Telegram OTP platform."""
