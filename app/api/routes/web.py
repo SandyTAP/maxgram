@@ -2,15 +2,15 @@ from __future__ import annotations
 
 from secrets import token_urlsafe
 
-from fastapi import APIRouter, Depends, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi import APIRouter, Depends, HTTPException, Request
+from fastapi.responses import HTMLResponse, RedirectResponse, Response
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import current_admin, current_user
 from app.core.config import settings
 from app.db.session import get_db
-from app.models import Admin, LoginHistory, Notification, OTPCode, User, UserSession, VirtualNumber
+from app.models import LoginHistory, Notification, OTPCode, User, UserSession, VirtualNumber
 from app.models.enums import NumberStatus
 from app.web.templating import templates
 
@@ -76,10 +76,13 @@ async def admin_login_page(request: Request, error: str | None = None) -> HTMLRe
 @router.get("/admin", response_class=HTMLResponse)
 async def admin_panel(
     request: Request,
-    _: Admin = Depends(current_admin),
     db: AsyncSession = Depends(get_db),
-) -> HTMLResponse:
-    users_count = await db.scalar(select(User).count()) if False else None
+) -> Response:
+    try:
+        await current_admin(request, db)
+    except HTTPException:
+        return RedirectResponse("/admin/login", status_code=303)
+
     users = (await db.execute(select(User).order_by(User.created_at.desc()).limit(50))).scalars().all()
     numbers = (await db.execute(select(VirtualNumber).order_by(VirtualNumber.country, VirtualNumber.phone_number))).scalars().all()
     busy_count = len([number for number in numbers if number.status == NumberStatus.busy])
