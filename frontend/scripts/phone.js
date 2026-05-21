@@ -12,6 +12,7 @@ const devCode = document.getElementById("devCode");
 const loginBox = document.querySelector(".login-box");
 
 let phoneToken = null;
+let isCodeStep = false;
 
 function setPhoneMessage(text, type = "") {
     phoneMessage.textContent = text;
@@ -51,9 +52,23 @@ function showPhoneLogin() {
     loginBox.classList.add("phone-mode");
     phoneLoginBtn.classList.add("hidden");
     phoneForm.classList.remove("hidden");
+    authError.classList.add("hidden");
+
+    showPhoneStep();
+
+    phoneInput.focus();
+}
+
+function showPhoneStep() {
+    isCodeStep = false;
+    phoneToken = null;
+    codeInput.value = "";
+    codeContinueBtn.disabled = true;
+
     phoneStep.classList.remove("hidden");
     codeForm.classList.add("hidden");
-    authError.classList.add("hidden");
+    devCode.textContent = "";
+    backQrBtn.textContent = "Назад к QR-коду";
     setPhoneMessage("");
 
     title.textContent = "С каким номером телефона хотите войти?";
@@ -70,12 +85,14 @@ function showQrLogin() {
 
     phoneInput.value = "";
     codeInput.value = "";
+    isCodeStep = false;
     phoneToken = null;
     phoneContinueBtn.disabled = true;
     codeContinueBtn.disabled = true;
     phoneStep.classList.remove("hidden");
     codeForm.classList.add("hidden");
     devCode.textContent = "";
+    backQrBtn.textContent = "Назад к QR-коду";
     setPhoneMessage("");
 
     resetExpiredText();
@@ -104,9 +121,11 @@ async function startPhoneLogin() {
         }
 
         phoneToken = data.token;
+        isCodeStep = true;
         phoneStep.classList.add("hidden");
         codeForm.classList.remove("hidden");
         devCode.textContent = `Тестовый SMS-код: ${data.devCode}`;
+        backQrBtn.textContent = "Изменить номер телефона";
         title.textContent = "Введите код из SMS";
         subtitle.textContent = "Мы отправили код на ваш номер";
         setPhoneMessage("");
@@ -149,7 +168,14 @@ async function verifyPhoneCode() {
 }
 
 phoneLoginBtn.addEventListener("click", showPhoneLogin);
-backQrBtn.addEventListener("click", showQrLogin);
+backQrBtn.addEventListener("click", () => {
+    if (isCodeStep) {
+        showPhoneStep();
+        return;
+    }
+
+    showQrLogin();
+});
 
 phoneInput.addEventListener("input", () => {
     phoneInput.value = formatPhone(phoneInput.value);
