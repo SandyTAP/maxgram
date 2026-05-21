@@ -16,6 +16,16 @@ from app.services.telegram import send_telegram_message
 
 _rng = SystemRandom()
 
+CONSUME_OTP_SCRIPT = """
+local expected = redis.call('GET', KEYS[1])
+if not expected or expected ~= ARGV[1] then
+    return 0
+end
+redis.call('DEL', KEYS[1])
+redis.call('DEL', KEYS[2])
+return 1
+"""
+
 
 class OTPService:
     def __init__(self, session: AsyncSession, redis: Redis) -> None:
@@ -71,10 +81,9 @@ class OTPService:
             return False
 
         code_key = f"otp:login:{user_id}"
-        expected = await self.redis.get(code_key)
-        if expected is None or expected != code:
+        consumed = await self.redis.eval(CONSUME_OTP_SCRIPT, 2, code_key, attempts_key, code)
+        if int(consumed) != 1:
             return False
-        await self.redis.delete(code_key, attempts_key)
         result = await self.session.execute(
             select(OTPCode)
             .where(OTPCode.user_id == user_id, OTPCode.is_used.is_(False))
