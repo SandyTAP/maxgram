@@ -8,6 +8,7 @@ const codeContinueBtn = document.getElementById("codeContinueBtn");
 const backQrBtn = document.getElementById("backQrBtn");
 const phoneMessage = document.getElementById("phoneMessage");
 const devCode = document.getElementById("devCode");
+const loginBox = document.querySelector(".login-box");
 
 let phoneToken = null;
 
@@ -46,6 +47,7 @@ function showPhoneLogin() {
     window.stopQrPolling?.();
 
     qr.closest(".qr-wrapper").classList.add("hidden");
+    loginBox.classList.add("phone-mode");
     phoneLoginBtn.classList.add("hidden");
     phoneForm.classList.remove("hidden");
     authError.classList.add("hidden");
@@ -58,6 +60,7 @@ function showPhoneLogin() {
 
 function showQrLogin() {
     phoneForm.classList.add("hidden");
+    loginBox.classList.remove("phone-mode");
     phoneLoginBtn.classList.remove("hidden");
     qr.closest(".qr-wrapper").classList.remove("hidden");
 

@@ -36,10 +36,11 @@ body{
 
 
 .login-box{
-    width:100%;
+    width:calc(100% - 40px);
     max-width:580px;
 
     height:650px;
+    max-height:calc(100vh - 64px);
 
     display:flex;
     flex-direction:column;
@@ -74,6 +75,10 @@ body{
     box-shadow:
     0 18px 60px rgba(0,0,0,.42),
     inset 0 1px 0 rgba(255,255,255,.03);
+}
+
+.login-box.phone-mode{
+    padding-bottom:28px;
 }
 
 
@@ -301,6 +306,7 @@ body{
     max-width:420px;
 
     margin-top:34px;
+    flex:1;
 
     display:flex;
     flex-direction:column;
@@ -453,16 +459,12 @@ body{
 }
 
 .back-qr-btn{
-    margin-top:0;
-
-    background:transparent;
-    color:rgba(255,255,255,.48);
-
-    padding:8px 12px;
+    margin-top:auto;
+    align-self:center;
 }
 
 .back-qr-btn:hover{
-    background:rgba(255,255,255,.06);
+    background:rgba(255,255,255,.12);
 }
 
 .phone-form.hidden,
@@ -472,10 +474,8 @@ body{
 
 @media (max-width: 520px){
     .login-box{
-        min-height:100vh;
-        height:100vh;
-
-        border-radius:0;
+        width:calc(100% - 24px);
+        max-height:calc(100vh - 24px);
     }
 
     .title{
@@ -485,9 +485,6 @@ body{
 
 @media (max-height: 700px){
     .login-box{
-        height:100vh;
-        max-height:100vh;
-
         padding-top:28px;
     }
 
