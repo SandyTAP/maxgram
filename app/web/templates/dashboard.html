@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — MaxGram{% endblock %}
+{% block content %}
+<div class="flex flex-wrap items-center justify-between gap-4">
+  <div><h1 class="text-4xl font-black">Dashboard</h1><p class="mt-2 text-slate-300">{{ user.email }} · {{ user.username }}</p></div>
+  <form method="post" action="/logout"><button class="rounded-2xl border border-white/15 px-5 py-3 font-bold hover:bg-white/10">Logout</button></form>
+</div>
+<div class="mt-8 grid gap-6 lg:grid-cols-2">
+  <section class="rounded-3xl border border-white/10 bg-white/10 p-6"><h2 class="text-xl font-bold">Активные номера</h2><div class="mt-4 space-y-3">{% for number in numbers %}<div class="rounded-2xl bg-slate-900 p-4"><b>{{ number.phone_number }}</b><div class="text-sm text-slate-400">{{ number.country }} · {{ number.status }} · до {{ number.expires_at }}</div></div>{% else %}<p class="text-slate-400">Номера выдаются через Telegram-бота.</p>{% endfor %}</div></section>
+  <section class="rounded-3xl border border-white/10 bg-white/10 p-6"><h2 class="text-xl font-bold">История входов</h2><div class="mt-4 space-y-3">{% for item in logins %}<div class="rounded-2xl bg-slate-900 p-4"><b>{{ 'Успешно' if item.success else 'Попытка' }}</b><div class="text-sm text-slate-400">{{ item.created_at }} · {{ item.ip_address }} · {{ item.reason }}</div></div>{% else %}<p class="text-slate-400">История пуста.</p>{% endfor %}</div></section>
+  <section class="rounded-3xl border border-white/10 bg-white/10 p-6"><h2 class="text-xl font-bold">OTP</h2><div class="mt-4 space-y-3">{% for item in otps %}<div class="rounded-2xl bg-slate-900 p-4"><b>{{ item.purpose }}</b><div class="text-sm text-slate-400">{{ item.created_at }} · expires {{ item.expires_at }}</div></div>{% else %}<p class="text-slate-400">Кодов пока нет.</p>{% endfor %}</div></section>
+  <section class="rounded-3xl border border-white/10 bg-white/10 p-6"><h2 class="text-xl font-bold">Уведомления</h2><div class="mt-4 space-y-3">{% for item in notifications %}<div class="rounded-2xl bg-slate-900 p-4"><b>{{ item.title }}</b><div class="text-sm text-slate-400">{{ item.message }}</div></div>{% else %}<p class="text-slate-400">Уведомлений пока нет.</p>{% endfor %}</div></section>
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}MaxGram — Telegram OTP{% endblock %}
+{% block content %}
+<section class="grid items-center gap-10 py-16 lg:grid-cols-2">
+  <div>
+    <p class="mb-4 inline-flex rounded-full border border-blue-400/40 bg-blue-400/10 px-4 py-2 text-sm text-blue-100">Telegram OTP вместо SMS</p>
+    <h1 class="text-4xl font-black tracking-tight sm:text-6xl">Единая авторизация сайта и Telegram-бота</h1>
+    <p class="mt-6 text-lg leading-8 text-slate-300">Регистрация, вход, OTP-коды, история сессий и выдача виртуальных номеров работают через общую PostgreSQL базу и Redis.</p>
+    <div class="mt-8 flex flex-wrap gap-4">
+      <a href="/login" class="rounded-2xl bg-blue-500 px-6 py-3 font-bold shadow-lg shadow-blue-500/30 hover:bg-blue-400">Начать вход</a>
+      <a href="/health/ready" class="rounded-2xl border border-white/15 px-6 py-3 font-bold hover:bg-white/10">Healthcheck</a>
+    </div>
+  </div>
+  <div class="rounded-3xl border border-white/10 bg-white/10 p-6 shadow-2xl backdrop-blur">
+    <div class="grid gap-4 sm:grid-cols-2">
+      {% for item in ['FastAPI', 'aiogram 3', 'PostgreSQL', 'Redis OTP', 'JWT Cookies', 'Celery cleanup', 'Alembic', 'Nginx'] %}
+      <div class="rounded-2xl border border-white/10 bg-slate-900/80 p-4 text-slate-100">{{ item }}</div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}
