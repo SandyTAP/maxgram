@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 import uuid
 import qrcode
@@ -14,6 +14,7 @@ DOMAIN = "http://192.168.0.100:5000"
 # DOMAIN = "https://maxspise.com"
 expired_secound = 5
 sessions = {}
+phone_sessions = {}
 
 """
 sessions = {
@@ -31,13 +32,21 @@ def cleanup():
         now = time.time()
 
         expired = []
+        expired_phone = []
 
         for token, data in sessions.items():
             if now - data["created_at"] > expired_secound:
                 expired.append(token)
 
+        for token, data in phone_sessions.items():
+            if now - data["created_at"] > 300:
+                expired_phone.append(token)
+
         for token in expired:
             del sessions[token]
+
+        for token in expired_phone:
+            del phone_sessions[token]
 
         time.sleep(10)
 
@@ -164,6 +173,69 @@ def approve(token):
 
     return jsonify({
         "success": True
+    })
+
+@app.route("/api/phone/start", methods=["POST"])
+def phone_start():
+    data = request.get_json(silent=True) or {}
+    phone = "".join(
+        char for char in data.get("phone", "")
+        if char.isdigit()
+    )
+
+    if phone.startswith("8") and len(phone) == 11:
+        phone = "7" + phone[1:]
+
+    if len(phone) == 10:
+        phone = "7" + phone
+
+    if not phone.startswith("7") or len(phone) != 11:
+        return jsonify({
+            "error": "Введите российский номер телефона"
+        }), 400
+
+    token = str(uuid.uuid4())
+    code = str(uuid.uuid4().int % 1000000).zfill(6)
+
+    phone_sessions[token] = {
+        "phone": phone,
+        "code": code,
+        "status": "code_sent",
+        "created_at": time.time()
+    }
+
+    return jsonify({
+        "token": token,
+        "status": "code_sent",
+        "devCode": code
+    })
+
+@app.route("/api/phone/verify", methods=["POST"])
+def phone_verify():
+    data = request.get_json(silent=True) or {}
+    token = data.get("token", "")
+    code = "".join(
+        char for char in data.get("code", "")
+        if char.isdigit()
+    )
+
+    session = phone_sessions.get(token)
+
+    if not session:
+        return jsonify({
+            "error": "Код устарел, запросите новый"
+        }), 404
+
+    if session["code"] != code:
+        return jsonify({
+            "error": "Неверный код"
+        }), 400
+
+    session["status"] = "approved"
+
+    return jsonify({
+        "success": True,
+        "phone": session["phone"]
     })
 
 @app.route("/auth/<token>")

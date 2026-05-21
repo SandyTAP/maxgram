@@ -265,3 +265,265 @@ body{
     margin-top: 30px;
     font-weight: bold;
 }
+
+.phone-login-btn,
+.back-qr-btn{
+    margin-top:34px;
+
+    border:none;
+    outline:none;
+
+    background:rgba(255,255,255,.08);
+    color:rgba(255,255,255,.92);
+
+    border-radius:16px;
+
+    padding:14px 22px;
+
+    font-size:15px;
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:
+    background .2s ease,
+    transform .2s ease;
+}
+
+.phone-login-btn:hover,
+.back-qr-btn:hover{
+    background:rgba(255,255,255,.12);
+    transform:translateY(-1px);
+}
+
+.phone-form{
+    width:100%;
+    max-width:420px;
+
+    margin-top:34px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+
+    gap:14px;
+}
+
+.phone-field{
+    width:100%;
+    height:58px;
+
+    display:flex;
+    align-items:center;
+
+    padding:0 16px;
+
+    background:rgba(255,255,255,.08);
+
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:18px;
+
+    box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.04);
+}
+
+.country-code{
+    display:flex;
+    align-items:center;
+    gap:8px;
+
+    color:white;
+
+    font-size:16px;
+    font-weight:600;
+
+    padding-right:12px;
+    margin-right:12px;
+
+    border-right:1px solid rgba(255,255,255,.12);
+}
+
+.flag{
+    font-size:18px;
+}
+
+.phone-input,
+.code-input{
+    width:100%;
+
+    border:none;
+    outline:none;
+
+    background:transparent;
+    color:white;
+
+    font-family:'Inter',sans-serif;
+    font-size:18px;
+    font-weight:600;
+}
+
+.phone-input::placeholder,
+.code-input::placeholder{
+    color:rgba(255,255,255,.32);
+}
+
+.phone-hint{
+    color:rgba(255,255,255,.42);
+
+    font-size:12px;
+    line-height:1.35;
+
+    text-align:left;
+}
+
+.continue-btn{
+    width:100%;
+    height:54px;
+
+    border:none;
+    outline:none;
+
+    border-radius:18px;
+
+    background:#2481ff;
+    color:white;
+
+    font-size:15px;
+    font-weight:800;
+
+    cursor:pointer;
+
+    box-shadow:
+    0 10px 28px rgba(36,129,255,.32);
+
+    transition:
+    background .2s ease,
+    opacity .2s ease,
+    transform .2s ease;
+}
+
+.continue-btn:hover:not(:disabled){
+    background:#3790ff;
+    transform:translateY(-1px);
+}
+
+.continue-btn:disabled{
+    cursor:not-allowed;
+    opacity:.45;
+}
+
+.code-form{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.code-input{
+    height:54px;
+
+    padding:0 18px;
+
+    background:rgba(255,255,255,.08);
+
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:18px;
+
+    text-align:center;
+    letter-spacing:6px;
+}
+
+.dev-code,
+.phone-message{
+    min-height:18px;
+
+    color:rgba(255,255,255,.62);
+
+    font-size:13px;
+    line-height:1.35;
+
+    text-align:center;
+}
+
+.phone-message.success{
+    color:#7ee787;
+}
+
+.phone-message.error{
+    color:#ff6b7d;
+}
+
+.back-qr-btn{
+    margin-top:0;
+
+    background:transparent;
+    color:rgba(255,255,255,.48);
+
+    padding:8px 12px;
+}
+
+.back-qr-btn:hover{
+    background:rgba(255,255,255,.06);
+}
+
+.phone-form.hidden,
+.code-form.hidden{
+    display:none;
+}
+
+@media (max-width: 520px){
+    .login-box{
+        min-height:100vh;
+        height:100vh;
+
+        border-radius:0;
+    }
+
+    .title{
+        white-space:normal;
+    }
+}
+
+@media (max-height: 700px){
+    .login-box{
+        height:100vh;
+        max-height:100vh;
+
+        padding-top:28px;
+    }
+
+    .top-icons{
+        top:18px;
+    }
+
+    .qr-wrapper{
+        width:190px;
+        height:190px;
+
+        margin-top:30px;
+        margin-bottom:4px;
+    }
+
+    .qr{
+        width:180px;
+        height:180px;
+
+        border-radius:18px;
+    }
+
+    .title{
+        margin-top:18px;
+    }
+
+    .subtitle{
+        margin-top:8px;
+    }
+
+    .phone-login-btn{
+        margin-top:20px;
+    }
+
+    .phone-form{
+        margin-top:24px;
+        gap:12px;
+    }
+}

@@ -103,6 +103,13 @@ function startPolling() {
 
 }
 
+function stopQrPolling() {
+    if (pollingInterval) {
+        clearInterval(pollingInterval);
+        pollingInterval = null;
+    }
+}
+
 
 
 refreshBtn.addEventListener("click", async () => {
@@ -114,3 +121,6 @@ refreshBtn.addEventListener("click", async () => {
 
 
 loadQR();
+
+window.loadQR = loadQR;
+window.stopQrPolling = stopQrPolling;
