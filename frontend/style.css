@@ -273,6 +273,7 @@ body{
 
 .phone-login-btn,
 .back-qr-btn{
+    width:100%;
     margin-top:34px;
 
     border:none;
@@ -294,6 +295,7 @@ body{
     background .2s ease,
     transform .2s ease;
 }
+
 
 .phone-login-btn:hover,
 .back-qr-btn:hover{
