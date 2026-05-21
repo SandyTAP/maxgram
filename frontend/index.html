@@ -114,35 +114,42 @@
         id="phoneForm"
     >
 
-        <div class="phone-field">
-            <div class="country-code">
-                <span class="flag">🇷🇺</span>
-                <span>+7</span>
+        <div
+            class="phone-step"
+            id="phoneStep"
+        >
+
+            <div class="phone-field">
+                <div class="country-code">
+                    <span class="flag">🇷🇺</span>
+                    <span>+7</span>
+                </div>
+
+                <input
+                    id="phoneInput"
+                    class="phone-input"
+                    type="tel"
+                    inputmode="numeric"
+                    autocomplete="tel"
+                    placeholder="123 456 78 90"
+                    maxlength="13"
+                >
             </div>
 
-            <input
-                id="phoneInput"
-                class="phone-input"
-                type="tel"
-                inputmode="numeric"
-                autocomplete="tel"
-                placeholder="123 456 78 90"
-                maxlength="13"
+            <div class="phone-hint">
+                Для входа нужен номер из России. Код появится ниже в тестовом режиме.
+            </div>
+
+            <button
+                class="continue-btn"
+                id="phoneContinueBtn"
+                type="button"
+                disabled
             >
-        </div>
+                Продолжить
+            </button>
 
-        <div class="phone-hint">
-            Для входа нужен номер из России. Код появится ниже в тестовом режиме.
         </div>
-
-        <button
-            class="continue-btn"
-            id="phoneContinueBtn"
-            type="button"
-            disabled
-        >
-            Продолжить
-        </button>
 
         <div
             class="code-form hidden"
@@ -173,6 +180,11 @@
             </button>
         </div>
 
+        <div
+            class="phone-message"
+            id="phoneMessage"
+        ></div>
+
         <button
             class="back-qr-btn"
             id="backQrBtn"
@@ -180,11 +192,6 @@
         >
             Назад к QR-коду
         </button>
-
-        <div
-            class="phone-message"
-            id="phoneMessage"
-        ></div>
     </div>
 
 

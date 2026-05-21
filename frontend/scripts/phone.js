@@ -1,5 +1,6 @@
 const phoneLoginBtn = document.getElementById("phoneLoginBtn");
 const phoneForm = document.getElementById("phoneForm");
+const phoneStep = document.getElementById("phoneStep");
 const phoneInput = document.getElementById("phoneInput");
 const phoneContinueBtn = document.getElementById("phoneContinueBtn");
 const codeForm = document.getElementById("codeForm");
@@ -50,7 +51,10 @@ function showPhoneLogin() {
     loginBox.classList.add("phone-mode");
     phoneLoginBtn.classList.add("hidden");
     phoneForm.classList.remove("hidden");
+    phoneStep.classList.remove("hidden");
+    codeForm.classList.add("hidden");
     authError.classList.add("hidden");
+    setPhoneMessage("");
 
     title.textContent = "С каким номером телефона хотите войти?";
     subtitle.textContent = "На него придёт SMS с кодом";
@@ -69,6 +73,7 @@ function showQrLogin() {
     phoneToken = null;
     phoneContinueBtn.disabled = true;
     codeContinueBtn.disabled = true;
+    phoneStep.classList.remove("hidden");
     codeForm.classList.add("hidden");
     devCode.textContent = "";
     setPhoneMessage("");
@@ -99,9 +104,12 @@ async function startPhoneLogin() {
         }
 
         phoneToken = data.token;
+        phoneStep.classList.add("hidden");
         codeForm.classList.remove("hidden");
         devCode.textContent = `Тестовый SMS-код: ${data.devCode}`;
-        setPhoneMessage("Введите код, чтобы завершить вход");
+        title.textContent = "Введите код из SMS";
+        subtitle.textContent = "Мы отправили код на ваш номер";
+        setPhoneMessage("");
         codeInput.focus();
     } catch (err) {
         setPhoneMessage(err.message, "error");
