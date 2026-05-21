@@ -4,6 +4,43 @@
 
 ---
 
+# 🚀 Запуск проекта
+
+## Требования
+
+- Python 3.10+
+- pip
+
+## Установка зависимостей
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+## Запуск backend
+
+```bash
+cd backend
+python server.py
+```
+
+Backend запустится на `http://localhost:5000`.
+
+## Запуск frontend
+
+В отдельном терминале из корня проекта:
+
+```bash
+cd frontend
+python -m http.server 8000
+```
+
+После этого откройте `http://localhost:8000` в браузере.
+
+---
+
 # ✨ Возможности
 
 ## 💬 Основной функционал

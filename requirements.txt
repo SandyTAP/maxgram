@@ -1,0 +1,4 @@
+Flask>=3.0
+flask-cors>=4.0
+qrcode[pil]>=7.4
+Pillow>=10.0
