@@ -15,7 +15,8 @@ class RedisRateLimitMiddleware(BaseHTTPMiddleware):
         if request.url.path.startswith(("/static", "/health", "/metrics")):
             return await call_next(request)
 
-        client_ip = request.headers.get("x-forwarded-for", request.client.host if request.client else "unknown").split(",")[0]
+        forwarded_for = request.headers.get("x-forwarded-for")
+        client_ip = forwarded_for.split(",")[-1].strip() if forwarded_for else (request.client.host if request.client else "unknown")
         key = f"rate:{client_ip}:{request.url.path}"
         redis = get_redis()
         current = await redis.incr(key)

@@ -18,7 +18,7 @@ ADMIN_COOKIE_NAME = "admin_access_token"
 def client_ip(request: Request) -> str | None:
     value = request.headers.get("x-forwarded-for")
     if value:
-        return value.split(",")[0].strip()
+        return value.split(",")[-1].strip()
     return request.client.host if request.client else None
 
 

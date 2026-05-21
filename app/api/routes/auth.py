@@ -6,14 +6,14 @@ from secrets import token_hex
 
 from fastapi import APIRouter, Depends, Form, HTTPException, Request, Response, status
 from fastapi.responses import RedirectResponse
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.core.security import create_access_token, csrf_matches, verify_password
 from app.db.redis import get_redis
 from app.db.session import get_db
-from app.models import Admin, NotificationType, User
+from app.models import Admin, NotificationType, User, UserSession
 from app.repositories.audit import LoginHistoryRepository, NotificationRepository
 from app.repositories.users import UserRepository
 from app.services.auth import ADMIN_COOKIE_NAME, clear_auth_cookie, client_ip, create_user_session, set_auth_cookie, user_agent
@@ -117,7 +117,17 @@ async def verify_otp(
 
 
 @router.post("/logout")
-async def logout(response: Response) -> RedirectResponse:
+async def logout(request: Request, db: AsyncSession = Depends(get_db)) -> RedirectResponse:
+    from app.services.auth import COOKIE_NAME, decode_cookie_token
+
+    payload = decode_cookie_token(request.cookies.get(COOKIE_NAME))
+    if payload and payload.get("type") == "user" and payload.get("jti"):
+        await db.execute(
+            update(UserSession)
+            .where(UserSession.jti == payload["jti"], UserSession.revoked_at.is_(None))
+            .values(revoked_at=datetime.now(UTC))
+        )
+        await db.commit()
     redirect = RedirectResponse("/login", status_code=303)
     clear_auth_cookie(redirect)
     return redirect
@@ -137,14 +147,21 @@ async def admin_login(
     admin = result.scalar_one_or_none()
     if admin is None or not verify_password(password, admin.password_hash):
         return RedirectResponse("/admin/login?error=Неверные данные", status_code=303)
-    token = create_access_token(str(admin.id), extra={"jti": token_hex(16), "type": "admin"})
+    jti = token_hex(16)
+    token = create_access_token(str(admin.id), extra={"jti": jti, "type": "admin"})
+    await get_redis().set(f"admin_session:{jti}", str(admin.id), ex=settings.access_token_expire_minutes * 60)
     response = RedirectResponse("/admin", status_code=303)
     set_auth_cookie(response, token, name=ADMIN_COOKIE_NAME)
     return response
 
 
 @router.post("/admin/logout")
-async def admin_logout() -> RedirectResponse:
+async def admin_logout(request: Request) -> RedirectResponse:
+    from app.services.auth import decode_cookie_token
+
+    payload = decode_cookie_token(request.cookies.get(ADMIN_COOKIE_NAME))
+    if payload and payload.get("type") == "admin" and payload.get("jti"):
+        await get_redis().delete(f"admin_session:{payload['jti']}")
     response = RedirectResponse("/admin/login", status_code=303)
     clear_auth_cookie(response, name=ADMIN_COOKIE_NAME)
     return response
